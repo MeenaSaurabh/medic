@@ -1,0 +1,33 @@
+<%- include("partials/header"); %>
+
+    
+    <div class="container bg-light py-3 mt-5 shadow-lg p-5 mb-6 bg-body-tertiary rounded" >
+        <h1>
+            UPDATE Medicine
+        </h1>
+        <form action="/update/<%= currentTask._id%>" method="post">
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label" >Medicine Image</label>
+              <input type="text" name="img" value="<%= currentTask.img %>" class="form-control" id="exampleFormControlInput1" placeholder="Image">
+            </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label" >Medicine Name</label>
+            <input type="text" name="title" value="<%= currentTask.title %>" class="form-control" id="exampleFormControlInput1" placeholder="Title">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+            <textarea type="text" name="description"  class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter description here...."><%= currentTask.description %></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput2" class="form-label">Expiry Date</label>
+            <input type="date" name="date" value="<%= currentTask.date %>" class="form-control" id="exampleFormControlInput2" placeholder="">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput2" class="form-label">Price</label>
+            <input required type="text" name="cost" value="<%= currentTask.cost %>" class="form-control" id="exampleFormControlInput2" placeholder="In Rupees">
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+
+    <%- include("partials/footer"); %>

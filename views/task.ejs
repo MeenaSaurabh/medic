@@ -1,0 +1,46 @@
+<%- include("partials/header"); %>
+    <%- include("partials/nav"); %>
+        <div class="container">
+            <h1>
+                Welcome <span style="color: brown;"><%= user.username%></span>
+            </h1>
+            <a href="/add" class="btn btn-primary">Add Medicine</a>
+
+            <div class="container d-flex bg-secondary p-3 mt-3 flex-wrap">
+                <div class="container d-flex justify-content-between">
+                    <h1>List of All Medicines.</h1>
+                    <a href="/signout" class="btn btn-warning">Sign Out</a>
+                </div>
+
+                <hr>
+
+                <% allTasks.forEach( (task)=>{ %>
+                    <div class="card m-3" style="width: 18rem;">
+                        <img src="<%= task.img%>" class="card-img-top" alt="...">
+                        <div class="card-body ">
+                            <h5 class="card-title">
+                                Name :
+                                <%= task.title%>
+                            </h5>
+                            <hr>
+                            <p class="card-text">
+                                <%= task.description%>
+                            </P>
+                            <p class="card-text">
+                                Expiry Date :
+                                <%= task.date%>
+                            </P>
+                            <p class="card-text">
+                                Price :
+                                <%= task.cost%>
+                            </P>
+                            <a href="/update/<%= task._id %>" class="btn btn-primary">Update</a>
+                            <a href="/delete/<%= task._id %>" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+
+
+        <%- include("partials/footer"); %>

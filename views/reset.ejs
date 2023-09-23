@@ -1,0 +1,23 @@
+<%- include("partials/header"); %>
+<%- include("partials/nav"); %>
+
+    <div class="container form-control bg-secondary p-3">
+
+        <h1>Reset Password</h1>
+    <form action="/reset/<%= id %>" method="post">
+        
+        <div class="mb-3 ">
+            <input type="password" name="oldpassword" class="form-control" id="exampleFormControlInput1"
+                placeholder="Old password">
+        </div>
+        <div class="mb-3 ">
+            <input type="password" name="password" class="form-control" id="exampleFormControlInput1"
+                placeholder="New password">
+        </div>
+  
+        <button type="submit" class="btn btn-primary mb-3">Change</button>
+ 
+    </form>
+</div>
+
+<%- include("partials/footer"); %>
