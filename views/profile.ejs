@@ -1,0 +1,32 @@
+<%- include("partials/header"); %>
+    <%- include("partials/nav"); %>
+
+
+        <div class="container form-control bg-secondary p-3 mt-5">
+                    <form action="/profile/<%=user._id%>" method="post">
+                        <!-- <div class="container w-25 mt-5 bg-dark text-light p-3"> -->
+                        <h1 class="mb-4">User Profile Page</h1>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Username" value="<%= user.username%>">
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                            <input type="email" name="email" class="form-control" id="exampleFormControlInput1"
+                                placeholder="name@example.com" value="<%= user.email%>">
+                        </div>
+                        <button class="btn btn-primary mb-2" href="">Update Profile</button>
+                        <!-- </div> -->
+                    </form>
+                <hr />
+                <div class="container w-50">
+                    <a class="btn btn-warning" href="/reset/<%=user._id%>">Reset Password</a>
+                </div>
+        </div>
+
+        <!-- <hr class="container my-3" /> -->
+
+
+
+        <%- include("partials/footer");%>

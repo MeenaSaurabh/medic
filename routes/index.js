@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs")
 
 const test = require("../models/User");
 const userModel = require("../models/userModel");
+
 
 const passport = require("passport");
 const localStrategy = require("passport-local");
@@ -83,7 +85,7 @@ router.post("/changepassword/:id", async (req, res, next) => {
         } else {
             res.send(`Link expired try again <a href="/forgetpassword">Forget Password</a>`)
         }
-        
+
         await user.save();
         res.redirect("/signin")
     } catch (error) {
@@ -104,28 +106,78 @@ router.post("/reset/:id", async (req, res) => {
     }
 })
 
-// TO-DO LIST
-router.get("/add", (req, res) => {
-    res.render("add", { title: "Add Medicine" })
+// ----------------------------------------------------TODO PART-----------------------------------------------------------
+router.get("/task", isLoggedIn, async (req, res) => {
+    try {
+        const { todos } = await req.user.populate("todos")
+        res.render("task", { title: "Dashboard", allTasks:todos, user: req.user })
+    } catch (error) {
+        res.send(error);
+    }
 });
-router.post("/add", async (req, res) => {
+
+router.get("/profile", isLoggedIn, async function (req, res, next) {
+    try {
+      res.render("profile", { title: "Profile", user: req.user });
+    }
+    catch (error) {
+      res.send(error);
+    }
+  });
+  router.post("/profile/:id", isLoggedIn, async function (req, res) {
+    try {
+      await test.findByIdAndUpdate(req.params.id, req.body); // storing req.body(updated data) in particular id(document/user)
+      res.redirect("/profile") // .redirect always direct to the get-route of given/mentioned page 
+    }
+    catch (error) {
+      res.send(error);
+    }
+  })
+
+
+router.get("/add",isLoggedIn, async (req, res) => {
+    res.render("add", { title: "Add Medicine", user: req.user })
+});
+router.post("/add", isLoggedIn, async (req, res) => {
     try { //same as old Signup method
         const newTask = new userModel(req.body);
-        await newTask.save();
+        newTask.user = req.user._id;
+        req.user.todos.push(newTask._id)
+        await newTask.save()
+        await req.user.save()
         res.redirect("/task")
     } catch (error) {
         res.send(error);
     }
 })
 
-router.get("/task", isLoggedIn, async (req, res) => {
+
+router.get("/update/:id", isLoggedIn, async (req, res) => {
     try {
-        const allTasks = await userModel.find();
-        res.render("task", { title: "Dashboard", allTasks, user: req.user })
+        const currentTask = await userModel.findById(req.params.id);
+        res.render("updatetask", { title: "Update medicine", currentTask, user: req.user })
+    } catch (error) {
+        res.send(error)
+    }
+});
+router.post("/update/:id", isLoggedIn, async (req, res) => {
+    try {
+        await userModel.findByIdAndUpdate(req.params.id, req.body);
+        res.redirect("/task")
     } catch (error) {
         res.send(error);
     }
+})
+
+router.get("/delete/:id", isLoggedIn, async (req, res) => {
+    try {
+        await userModel.findByIdAndDelete(req.params.id);
+        res.redirect("/task")
+    } catch (error) {
+        res.send(error)
+    }
 });
+
 
 router.get("/signout", isLoggedIn, (req, res, next) => {
     req.logOut(() => {
@@ -139,34 +191,5 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect("/signin");
 }
-
-
-router.get("/update/:id", async (req, res) => {
-    try {
-        const currentTask = await userModel.findById(req.params.id);
-        res.render("updatetask", { title: "Update medicine", currentTask })
-    } catch (error) {
-        res.send(error)
-    }
-});
-router.post("/update/:id", async (req, res) => {
-    try {
-        await userModel.findByIdAndUpdate(req.params.id, req.body);
-        res.redirect("/task")
-    } catch (error) {
-        res.send(error);
-    }
-})
-
-router.get("/delete/:id", async (req, res) => {
-    try {
-        await userModel.findByIdAndDelete(req.params.id);
-        res.redirect("/task")
-    } catch (error) {
-        res.send(error)
-    }
-});
-
-
 
 module.exports = router;

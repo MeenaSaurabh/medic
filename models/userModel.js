@@ -6,6 +6,7 @@ const userData = new mongoose.Schema({
     description : String,
     date : String,
     cost : String,
+    user : {type: mongoose.Schema.Types.ObjectId , ref: "user"}
 })
 
 module.exports = mongoose.model("data",userData);

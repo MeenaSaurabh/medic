@@ -25,6 +25,11 @@ const userModel = new mongoose.Schema({
     password : {
         type : String
     } , 
+    avatar: {
+        type: String,
+        default: "default.jpg",
+    },
+    todos : [{ type : mongoose.Schema.Types. ObjectId, ref:"data"}]
 })
 
 userModel.plugin(plm);
